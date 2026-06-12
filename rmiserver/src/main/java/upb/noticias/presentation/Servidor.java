@@ -9,9 +9,6 @@ import upb.noticias.service.NoticiasService;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 
-/**
- * Inicia el registro RMI y ensambla las dependencias (Composition Root).
- */
 public class Servidor {
 
     private final String ip;
@@ -28,23 +25,21 @@ public class Servidor {
         try {
             System.setProperty("java.rmi.server.hostname", ip);
 
-            // ── Composition Root: cablea todas las dependencias ──
-            SesionRepository  sesionRepo   = new SesionRepository();
-            NoticiaRepository noticiaRepo  = new NoticiaRepository();
-            AuthService       authService  = new AuthService(sesionRepo);
-            INoticiasService  service      = new NoticiasService(noticiaRepo, authService);
+            SesionRepository  sesionRepo  = new SesionRepository();
+            NoticiaRepository noticiaRepo = new NoticiaRepository();
+            AuthService       authService = new AuthService(sesionRepo);
+            INoticiasService  service     = new NoticiasService(noticiaRepo, authService);
 
             String uri = "//" + ip + ":" + port + "/" + serviceName;
             LocateRegistry.createRegistry(Integer.parseInt(port));
             Naming.rebind(uri, service);
 
-            System.out.println("[Servidor] Registro RMI en puerto " + port);
-            System.out.println("[Servidor] Servicio disponible en: " + uri);
-            System.out.println("[Servidor] Esperando conexiones...");
+            // Solo el mensaje de inicio (información esencial)
+            System.out.println("[SERVIDOR] Activo en " + uri);
             return true;
+
         } catch (Exception e) {
-            System.err.println("[Servidor] Error al iniciar: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("[ERROR] No se pudo iniciar el servidor: " + e.getMessage());
             return false;
         }
     }

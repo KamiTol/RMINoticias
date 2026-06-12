@@ -6,8 +6,8 @@ import upb.noticias.service.INoticiasService;
 import java.util.List;
 
 /**
- * Proxy cliente: encapsula todas las llamadas al servicio remoto.
- * Maneja excepciones RMI y expone una API limpia a la capa de presentación.
+ * Proxy del cliente RMI. Sin mensajes de consola; los errores se propagan
+ * como excepciones para que la UI los maneje.
  */
 public class NoticiasClient {
 
@@ -17,46 +17,33 @@ public class NoticiasClient {
         this.servicio = conexion.getServicio();
     }
 
-    // ── Autenticación ──────────────────────────────────────────
-
-    public String login(String usuario, String contrasena) {
-        try { return servicio.login(usuario, contrasena); }
-        catch (Exception e) { System.err.println("Error en login: " + e.getMessage()); return null; }
+    public String login(String usuario, String contrasena) throws Exception {
+        return servicio.login(usuario, contrasena);
     }
 
-    // ── Lectura ────────────────────────────────────────────────
-
-    public List<Noticia> listarNoticias() {
-        try { return servicio.listarNoticias(); }
-        catch (Exception e) { System.err.println("Error: " + e.getMessage()); return null; }
+    public List<Noticia> listarNoticias() throws Exception {
+        return servicio.listarNoticias();
     }
 
-    public Noticia buscarNoticia(String nombreUnico) {
-        try { return servicio.buscarNoticia(nombreUnico); }
-        catch (Exception e) { System.err.println("Error: " + e.getMessage()); return null; }
+    public Noticia buscarNoticia(String nombreUnico) throws Exception {
+        return servicio.buscarNoticia(nombreUnico);
     }
 
-    public List<Noticia> buscarPorTitular(String fragmento) {
-        try { return servicio.buscarPorTitular(fragmento); }
-        catch (Exception e) { System.err.println("Error: " + e.getMessage()); return null; }
+    public List<Noticia> buscarPorTitular(String fragmento) throws Exception {
+        return servicio.buscarPorTitular(fragmento);
     }
-
-    // ── Escritura ──────────────────────────────────────────────
 
     public String publicarNoticia(String token, String nombreUnico,
-                                  String titular, String contenido) {
-        try { return servicio.publicarNoticia(token, nombreUnico, titular, contenido); }
-        catch (Exception e) { return "ERROR: " + e.getMessage(); }
+                                  String titular, String contenido) throws Exception {
+        return servicio.publicarNoticia(token, nombreUnico, titular, contenido);
     }
 
     public String modificarNoticia(String token, String nombreUnico,
-                                   String nuevoTitular, String nuevoContenido) {
-        try { return servicio.modificarNoticia(token, nombreUnico, nuevoTitular, nuevoContenido); }
-        catch (Exception e) { return "ERROR: " + e.getMessage(); }
+                                   String nuevoTitular, String nuevoContenido) throws Exception {
+        return servicio.modificarNoticia(token, nombreUnico, nuevoTitular, nuevoContenido);
     }
 
-    public String eliminarNoticia(String token, String nombreUnico) {
-        try { return servicio.eliminarNoticia(token, nombreUnico); }
-        catch (Exception e) { return "ERROR: " + e.getMessage(); }
+    public String eliminarNoticia(String token, String nombreUnico) throws Exception {
+        return servicio.eliminarNoticia(token, nombreUnico);
     }
 }

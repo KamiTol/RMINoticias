@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Almacena las sesiones activas en memoria.
- */
 public class SesionRepository {
 
     private final Map<String, Sesion> store = new ConcurrentHashMap<>();

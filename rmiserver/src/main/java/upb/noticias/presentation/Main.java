@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Punto de entrada del servidor.
- */
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
@@ -17,7 +14,7 @@ public class Main {
                 config.getProperty("SERVICENAME")
         );
         if (servidor.deploy()) {
-            Thread.currentThread().join(); // Mantiene el servidor activo
+            Thread.currentThread().join();
         }
     }
 
@@ -25,7 +22,7 @@ public class Main {
         Properties p = new Properties();
         try (InputStream in = Main.class.getClassLoader()
                 .getResourceAsStream("config.properties")) {
-            if (in == null) throw new RuntimeException("config.properties no encontrado en resources/");
+            if (in == null) throw new RuntimeException("config.properties no encontrado");
             p.load(in);
         } catch (IOException e) {
             throw new RuntimeException("Error leyendo config.properties", e);

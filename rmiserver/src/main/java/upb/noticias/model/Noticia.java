@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Modelo de dominio. Serializable para poder viajar por RMI.
- */
 public class Noticia implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,15 +27,13 @@ public class Noticia implements Serializable {
         this.ultimaFechaActualizacion = ahora;
     }
 
-    // ── Getters ──────────────────────────────────────────────
-    public String getNombreUnico()               { return nombreUnico; }
-    public String getTitular()                   { return titular; }
-    public String getFechaCreacion()             { return fechaCreacion; }
-    public String getUltimaFechaActualizacion()  { return ultimaFechaActualizacion; }
-    public String getAutor()                     { return autor; }
-    public String getContenido()                 { return contenido; }
+    public String getNombreUnico()              { return nombreUnico; }
+    public String getTitular()                  { return titular; }
+    public String getFechaCreacion()            { return fechaCreacion; }
+    public String getUltimaFechaActualizacion() { return ultimaFechaActualizacion; }
+    public String getAutor()                    { return autor; }
+    public String getContenido()                { return contenido; }
 
-    // ── Setters (registran timestamp automáticamente) ────────
     public void setTitular(String titular) {
         this.titular = titular;
         this.ultimaFechaActualizacion = LocalDateTime.now().format(FMT);
@@ -47,13 +42,5 @@ public class Noticia implements Serializable {
     public void setContenido(String contenido) {
         this.contenido = contenido;
         this.ultimaFechaActualizacion = LocalDateTime.now().format(FMT);
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-            "╔══ %s%n║ Titular  : %s%n║ Autor    : %s%n║ Creado   : %s%n║ Actualiz.: %s%n║ Contenido: %s%n╚══",
-            nombreUnico, titular, autor, fechaCreacion, ultimaFechaActualizacion, contenido
-        );
     }
 }

@@ -5,8 +5,7 @@ import upb.noticias.service.INoticiasService;
 import java.rmi.Naming;
 
 /**
- * Gestiona el ciclo de vida de la conexión RMI.
- * Separar la conexión del uso del servicio facilita reconectar o cambiar el protocolo.
+ * Gestiona la conexión RMI. Solo imprime en consola mensajes de error críticos.
  */
 public class ConexionRMI {
 
@@ -20,16 +19,16 @@ public class ConexionRMI {
     public boolean conectar() {
         try {
             servicio = (INoticiasService) Naming.lookup(uri);
-            System.out.println("[Cliente] Conectado a " + uri);
             return true;
         } catch (Exception e) {
-            System.err.println("[Cliente] No se pudo conectar: " + e.getMessage());
+            System.err.println("[ERROR] No se pudo conectar al servidor RMI: " + e.getMessage());
             return false;
         }
     }
 
     public INoticiasService getServicio() {
-        if (servicio == null) throw new IllegalStateException("No hay conexión activa. Llama a conectar() primero.");
+        if (servicio == null)
+            throw new IllegalStateException("Sin conexión activa.");
         return servicio;
     }
 }

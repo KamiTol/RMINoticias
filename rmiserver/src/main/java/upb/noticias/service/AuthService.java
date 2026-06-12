@@ -8,13 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Gestiona usuarios y sesiones.
- * Separa la responsabilidad de autenticación del servicio de noticias.
- */
 public class AuthService {
 
-    // Usuarios hardcodeados (en producción: cargar desde BD o archivo)
     private static final Map<String, Usuario> USUARIOS = Map.of(
         "admin",  new Usuario("admin",  "admin123",  Usuario.Rol.ADMIN),
         "maria",  new Usuario("maria",  "maria123",  Usuario.Rol.USUARIO),
@@ -28,24 +23,17 @@ public class AuthService {
         this.sesionRepo = sesionRepo;
     }
 
-    /**
-     * Valida credenciales y, si son correctas, crea y devuelve un token de sesión.
-     * Retorna null si las credenciales son incorrectas.
-     */
+    /** Retorna token si credenciales son válidas, null si no. */
     public String login(String username, String password) {
         Usuario usuario = USUARIOS.get(username);
         if (usuario == null || !usuario.getPassword().equals(password)) return null;
-
         String token = UUID.randomUUID().toString();
         sesionRepo.guardar(new Sesion(token, usuario));
-        System.out.printf("[Auth] Login: %s (%s)%n", username, usuario.getRol());
+        // Solo log de login exitoso (información esencial)
+        System.out.printf("[LOGIN] %s (%s)%n", username, usuario.getRol());
         return token;
     }
 
-    /**
-     * Busca la sesión asociada al token.
-     * Retorna Optional.empty() si el token es inválido o nulo.
-     */
     public Optional<Sesion> validarToken(String token) {
         return sesionRepo.buscarPorToken(token);
     }

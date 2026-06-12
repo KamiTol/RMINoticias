@@ -5,16 +5,11 @@ import upb.noticias.model.Noticia;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Acceso a datos de noticias.
- * Hoy usa un Map en memoria; cambiar a BD solo requiere modificar esta clase.
- */
 public class NoticiaRepository {
 
     private final Map<String, Noticia> store = new LinkedHashMap<>();
 
     public NoticiaRepository() {
-        // Datos de ejemplo
         seed("upb-bienvenida-2025",
              "Bienvenidos al semestre 2025-1",
              "admin",
@@ -28,8 +23,6 @@ public class NoticiaRepository {
     private void seed(String nombre, String titular, String autor, String contenido) {
         store.put(nombre, new Noticia(nombre, titular, autor, contenido));
     }
-
-    // ── CRUD ──────────────────────────────────────────────────
 
     public boolean guardar(Noticia noticia) {
         if (store.containsKey(noticia.getNombreUnico())) return false;
